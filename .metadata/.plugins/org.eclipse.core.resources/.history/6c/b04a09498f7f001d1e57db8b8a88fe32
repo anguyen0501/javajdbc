@@ -1,0 +1,50 @@
+package ConnectDatabase;
+
+public class Student {
+	private int id;
+	private String name;
+	private int age, gender;
+	private String major;
+	private float score;
+	public Student() {
+		
+	}
+	public Student(int id, String name, int age, int gender, String major, float score) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
+		this.gender = gender;
+		this.major = major;
+		this.score = score;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setAge(int age) {
+		this.age=age;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
+	public int getGender() {
+		return gender;
+	}
+	public void setMajor(String major) {
+		this.major = major;
+	}
+	public String getMajor() {
+		return major;
+	}
+	public void setScore(float score) {
+		this.score = score;
+	}
+	public float getScore() {
+		return score;
+	}
+}

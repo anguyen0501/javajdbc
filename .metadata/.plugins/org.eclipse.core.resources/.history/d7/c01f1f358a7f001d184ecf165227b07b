@@ -1,0 +1,103 @@
+package ConnectDatabase;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Statement;
+
+public class ConnectJDBC {
+	static String url = "jdbc:mysql:/localhost:8080//studentjv";
+	static String user = "root";
+	static String password = "123456";
+	public static Connection getConnection() {
+		Connection connection = null;
+		try {
+			connection=DriverManager.getConnection(url, user, password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return connection;
+	}
+	public static List<Student>fillAll() {
+		List<Student>studentList= new ArrayList<>();
+		String query = "select * from student";
+		try {
+			Connection cnn = getConnection();
+			Statement stmt = cnn.createStatement(); 
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				Student st = new Student(rs.getInt("id"), 
+						rs.getString("name"), rs.getInt("age"), 
+						rs.getInt("gender"), rs.getString("major"), 
+						rs.getFloat("score"));
+				studentList.add(st);
+			}
+		} catch (Exception e) {
+			
+		}
+		return studentList;
+	}
+	public static void insert(Student st) {
+		String query = "insert into student(name,age,gender,major,score) values(?,?,?,?,?)";
+		try {
+			Connection cnn = getConnection();
+			PreparedStatement pstmt = cnn.prepareStatement(query);
+			pstmt.setString(1, st.getName());
+			pstmt.setInt(2, st.getAge());
+			pstmt.setInt(3, st.getGender());
+			pstmt.setString(4, st.getMajor());
+			pstmt.setFloat(5, st.getScore());
+			pstmt.execute();
+		} catch (Exception e) {
+			
+		}
+	}
+	public static void delete(Student st) {
+		String query = "delete from student where name='" + st.getName() + "'";
+		try {
+			Connection cnn = getConnection();
+			PreparedStatement pstmt = cnn.prepareStatement(query);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			
+		}
+	}
+	public static void update(Student st) {
+		String query = "update student set name=?, age=?, gender=?, major=?, score=?"
+				+ "where name = '" + st.getName() + "'";
+		try {
+			Connection cnn = getConnection();
+			PreparedStatement pstmt = cnn.prepareStatement(query);
+			pstmt.setString(0, st.getName());
+			pstmt.setInt(2, st.getAge());
+			pstmt.setInt(3, st.getGender());
+			pstmt.setString(4, st.getMajor());
+			pstmt.setFloat(5, st.getScore());
+			pstmt.executeLargeUpdate();
+		} catch (Exception e) {
+			
+		}
+	}
+	public static List<Student> findByName(Student st) {
+		List<Student>studentL= new ArrayList<>();
+		String query = "select * from student where name '"+ st.getName() + "' ";
+		try {
+			Connection cnn = getConnection();
+			Statement stmt = cnn.createStatement(); 
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				Student st1 = new Student(rs.getInt("id"), 
+						rs.getString("name"), rs.getInt("age"), 
+						rs.getInt("gender"), rs.getString("major"), 
+						rs.getFloat("score"));
+				studentL.add(st1);
+			}
+		} catch (Exception e) {
+			
+		}
+		return studentL;
+	}
+}
